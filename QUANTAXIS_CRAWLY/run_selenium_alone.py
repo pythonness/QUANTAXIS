@@ -18,11 +18,18 @@ from QUANTAXIS.QAUtil import (DATABASE)
 
 def open_chrome_driver():
     if sys.platform == 'darwin':
+        print(" platform is ",sys.platform)
         browser = webdriver.Chrome('./QUANTAXIS_WEBDRIVER/macos/chromedriver')
-    elif sys.platform == 'win32':
-        browser = webdriver.Chrome('./QUANTAXIS_WEBDRIVER/windows/chromedriver')
+    elif sys.platform == 'win64':
+        print(" platform is ",sys.platform)
+        browser = webdriver.Chrome('./QUANTAXIS_WEBDRIVER/win64/chromedriver')
+    elif sys.platform == 'win32':            
+        print(" platform is ",sys.platform)
+        browser = webdriver.Chrome('./QUANTAXIS_WEBDRIVER/win64/chromedriver')
     elif sys.platform == 'linux':
+        print(" platform is ",sys.platform)
         browser = webdriver.Chrome('./QUANTAXIS_WEBDRIVER/linux/chromedriver')
+    else:
         # todo 🛠  linux 下没有测试， linux 下 非gui环境下，用chrome headless driver
         print("🎃")
         print("🎃./selenium_driver/linux/chromedrive   linux 平台上的的      🤖chromedriver 的路径")
@@ -34,14 +41,14 @@ def open_chrome_driver():
 def close_chrome_dirver(browser):
     browser.quit()
 
-def read_east_money_page_zjlx_to_sqllite(stockCode, save_sqlite_full_path_name, browser):
+def read_east_money_page_zjlx_to_mongodb(stockCode, browser):
 
     urls = 'http://data.eastmoney.com/zjlx/{}.html'.format(stockCode)
     pa=re.compile(r'\w+')
 
     # 启动chrome
     print("🖼 准备获取数据， 打开chromedrive ，")
-    browser.set_page_load_timeout(10)  # throw a TimeoutException when thepage load time is more than 15 seconds
+    browser.set_page_load_timeout(60)  # throw a TimeoutException when thepage load time is more than 15 seconds
     #browser.minimize_window()
 
     print("🖼 正在请求数据中，请耐心等待 🍺 ⌛ ⌛ ⌛ ⌛ ⌛ ️")

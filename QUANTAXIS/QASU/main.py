@@ -215,7 +215,7 @@ def QA_SU_save_stock_min_5(file_dir, client=DATABASE):
     return tdx_file.QA_save_tdx_to_mongo(file_dir, client)
 
 
-def QA_SU_crawl_eastmoney(action="zjlx",stockCode=None):
+def QA_SU_crawl_eastmoney(action="zjlx",stockCode=None, fromStockCodeToStart=None):
     '''
 
     :param action: zjlx 后期支持其他的操作类型
@@ -224,14 +224,27 @@ def QA_SU_crawl_eastmoney(action="zjlx",stockCode=None):
     '''
     stockItems = QA_fetch_stock_list()
 
-    if stockCode=="all":
-        #读取tushare股票列表代码
-        print("💪 一共需要获取 %d 个股票的 资金流向 , 需要大概 %d 小时" % (len(stockItems), (len(stockItems)*5)/60/60 ))
-
+    if stockCode=="all" or stockCode== "continue":
+      
         code_list = []
+
+        bCheckpointAfter = False
         for stock in stockItems:
+
+            if stock['code'] == fromStockCodeToStart:
+                bCheckpointAfter = True
+
+            if fromStockCodeToStart != None and bCheckpointAfter == False and stock['code'] != fromStockCodeToStart:
+                continue
+            elif fromStockCodeToStart != None and stock['code'] == fromStockCodeToStart:
+                bCheckpointAfter = True
+
             code_list.append(stock['code'])
             #print(stock['code'])
+
+          #读取tushare股票列表代码
+        print("💪 一共需要获取 %d 个股票的 资金流向 , 需要大概 %d 小时" % (len(code_list), (len(code_list)*30)/60/60 ))
+
         crawl_eastmoney_file.QA_read_eastmoney_zjlx_web_page_to_sqllite(code_list)
             #print(stock)
 

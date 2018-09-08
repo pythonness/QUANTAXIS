@@ -152,6 +152,9 @@ class CLI(cmd.Cmd):
                 #print("❌crawl eastmoney zjlx all !没有实现")
                 print("  准备抓取东方财富资金流向数据 ")
                 QA_SU_crawl_eastmoney(action=arg[1],stockCode=arg[2])
+            elif len(arg) == 4 and arg[0] == 'eastmoney' and arg[1] == 'zjlx' and arg[2] == 'continue' and arg[3] != None:
+                print("  从上次中断的代码中，继续抓取东方财富资金流向数据 ")
+                QA_SU_crawl_eastmoney(action=arg[1],stockCode=arg[2], fromStockCodeToStart= arg[3]); 
 
             elif len(arg) == 3 and arg[0] == 'jrj' and arg[1] == 'zjlx' and arg[2] == 'all':
                 print("❌crawl jrj zjlx all !没有实现")
